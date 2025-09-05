@@ -161,7 +161,7 @@ export default function MenuScreen({ navigation }) {
       <Modal
         visible={showModal}
         transparent={true}
-        animationType="fade"
+        animationType="slide"
         onRequestClose={() => setShowModal(false)}
       >
         <TouchableWithoutFeedback onPress={() => setShowModal(false)}>
@@ -186,8 +186,24 @@ export default function MenuScreen({ navigation }) {
                   style={styles.modalImage} 
                 />
                 <Text style={styles.modalDescription}>
-                  North Indian {selectedDish?.name} is a dish made from chicken marinated shgdhsdhgdshd is a dish made from chicken marinated
+                  {selectedDish?.description}
                 </Text>
+                <View style={{ marginBottom: 12 }}>
+                  {selectedDish?.mealType && (
+                    <Text style={{ fontSize: 14, color: '#333' }}>Meal Type: <Text style={{ fontWeight: 'bold' }}>{selectedDish.mealType}</Text></Text>
+                  )}
+                  {selectedDish?.type && (
+                    <Text style={{ fontSize: 14, color: '#333' }}>Type: <Text style={{ fontWeight: 'bold' }}>{selectedDish.type}</Text></Text>
+                  )}
+                  {selectedDish?.dishType && (
+                    <Text style={{ fontSize: 14, color: '#333' }}>Dish Type: <Text style={{ fontWeight: 'bold' }}>{selectedDish.dishType}</Text></Text>
+                  )}
+                  {selectedDish?.category?.name && (
+                    <Text style={{ fontSize: 14, color: '#333' }}>Category: <Text style={{ fontWeight: 'bold' }}>{selectedDish.category.name}</Text></Text>
+                  )}
+                  <Text style={{ fontSize: 14, color: '#333' }}>For Party: <Text style={{ fontWeight: 'bold' }}>{selectedDish?.forParty ? 'Yes' : 'No'}</Text></Text>
+                  <Text style={{ fontSize: 14, color: '#333' }}>For Chefit: <Text style={{ fontWeight: 'bold' }}>{selectedDish?.forChefit ? 'Yes' : 'No'}</Text></Text>
+                </View>
                 <TouchableOpacity 
                   style={styles.ingredientButton}
                   onPress={() => {
@@ -394,15 +410,24 @@ const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
-    justifyContent: "center",
+    justifyContent: "flex-end",
     alignItems: "center",
   },
   modalContent: {
     backgroundColor: "#fff",
-    marginHorizontal: 20,
-    borderRadius: 12,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    borderRadius: 0,
     padding: 16,
-    width: "90%",
+    width: "100%",
+    minHeight: 320,
+    marginHorizontal: 0,
+    marginBottom: 0,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 8,
   },
   modalHeader: {
     flexDirection: "row",
