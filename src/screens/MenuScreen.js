@@ -39,7 +39,13 @@ export default function MenuScreen({ navigation }) {
     }
   };
 
+  // Handler for Ingredient button
   const handleViewIngredients = (dish) => {
+    navigation.navigate("Ingredient", { dish });
+  };
+
+  // Handler for Read more button
+  const handleViewDetails = (dish) => {
     setSelectedDish(dish);
     setShowModal(true);
   };
@@ -132,6 +138,7 @@ export default function MenuScreen({ navigation }) {
             isSelected={selected.includes(item.id)}
             onToggleSelect={toggleSelect}
             onViewIngredients={handleViewIngredients}
+            onViewDetails={handleViewDetails}
           />
         )}
         style={styles.dishList}
