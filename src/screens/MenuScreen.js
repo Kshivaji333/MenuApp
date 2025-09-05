@@ -85,53 +85,43 @@ export default function MenuScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.timeText}>{getCurrentTime()}</Text>
-        <Text style={styles.title}>Menu</Text>
-        <View style={styles.headerRight} />
-      </View>
 
-      {/* Search Bar */}
-      <SearchBar 
-        value={searchText}
-        onChangeText={setSearchText}
-        placeholder="< Search dish for your party......"
-      />
-
-      {/* Category Tabs */}
-      <CategoryTabs 
-        categories={categories}
-        activeCategory={activeCategory}
-        onCategorySelect={setActiveCategory}
-      />
-
-      {/* Selection Summary */}
-      <View style={styles.selectionSummary}>
-        <Text style={styles.selectionText}>
-          {getCategoryName()} Selected ({getCategoryCount()})
-        </Text>
-        <View style={styles.toggleContainer}>
-          <TouchableOpacity
-            style={[styles.toggle, vegFilter ? { backgroundColor: '#4CAF50', borderColor: '#4CAF50' } : styles.toggleOff]}
-            onPress={() => setVegFilter(v => !v)}
-          >
-            <Text style={{ color: vegFilter ? '#fff' : '#666', fontSize: 12 }}>Veg</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.toggle, nonVegFilter ? { backgroundColor: '#FF4444', borderColor: '#FF4444' } : styles.toggleOff]}
-            onPress={() => setNonVegFilter(nv => !nv)}
-          >
-            <Text style={{ color: nonVegFilter ? '#fff' : '#666', fontSize: 12 }}>Non-Veg</Text>
-          </TouchableOpacity>
+      {/* Top Controls: Search, Tabs, Summary */}
+      <View style={styles.topControls}>
+        <SearchBar 
+          value={searchText}
+          onChangeText={setSearchText}
+          placeholder="< Search dish for your party......"
+        />
+        <CategoryTabs 
+          categories={categories}
+          activeCategory={activeCategory}
+          onCategorySelect={setActiveCategory}
+        />
+        <View style={styles.selectionSummary}>
+          <Text style={styles.selectionText}>
+            {getCategoryName()} Selected ({getCategoryCount()})
+          </Text>
+          <View style={styles.toggleContainer}>
+            {/* Veg Switch */}
+            <TouchableOpacity
+              style={[styles.switch, vegFilter ? styles.switchActiveVeg : styles.switchInactive]}
+              onPress={() => setVegFilter(v => !v)}
+            >
+              <View style={[styles.knob, vegFilter ? styles.knobVeg : styles.knobInactive, { left: vegFilter ? 18 : 4 }]} />
+            </TouchableOpacity>
+            {/* Non-Veg Switch */}
+            <TouchableOpacity
+              style={[styles.switch, nonVegFilter ? styles.switchActiveNonVeg : styles.switchInactive]}
+              onPress={() => setNonVegFilter(nv => !nv)}
+            >
+              <View style={[styles.knob, nonVegFilter ? styles.knobNonVeg : styles.knobInactive, { left: nonVegFilter ? 18 : 4 }]} />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
 
-      {/* Dish List */}
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>North Indian</Text>
-        <Text style={styles.arrow}>↑</Text>
-      </View>
+  {/* Dish List */}
 
       <FlatList
         data={filteredDishes}
@@ -202,23 +192,59 @@ export default function MenuScreen({ navigation }) {
         </View>
       </Modal>
 
-      {/* Sign up banner */}
-      <View style={styles.signupBanner}>
-        <Text style={styles.signupText}>Sign up to comment, edit, inspect and more.</Text>
-        <View style={styles.signupButtons}>
-          <TouchableOpacity style={styles.signupButton}>
-            <Text style={styles.signupButtonText}>Sign up</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.continueButtonSmall}>
-            <Text style={styles.continueButtonSmallText}>G Continue</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+  {/* ...existing code... */}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  switch: {
+    width: 40,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#f5f5f5',
+    borderWidth: 2,
+    borderColor: '#eee',
+    position: 'relative',
+    marginHorizontal: 4,
+    justifyContent: 'center',
+  },
+  switchActiveVeg: {
+    borderColor: '#4CAF50',
+  },
+  switchActiveNonVeg: {
+    borderColor: '#FF4444',
+  },
+  switchInactive: {
+    borderColor: '#eee',
+  },
+  knob: {
+    position: 'absolute',
+    top: 2,
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    borderWidth: 2,
+  },
+  knobVeg: {
+    borderColor: '#4CAF50',
+    backgroundColor: '#4CAF50',
+  },
+  knobNonVeg: {
+    borderColor: '#FF4444',
+    backgroundColor: '#FF4444',
+  },
+  knobInactive: {
+    borderColor: '#ccc',
+    backgroundColor: '#eee',
+  },
+  topControls: {
+    backgroundColor: '#fff',
+    paddingBottom: 4,
+    marginBottom: 2,
+    gap: 10,
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
