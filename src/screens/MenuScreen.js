@@ -8,7 +8,8 @@ import {
   SafeAreaView,
   Modal,
   Image,
-  ScrollView
+  ScrollView,
+  TouchableWithoutFeedback
 } from "react-native";
 import dishes from "../data/dishes.json";
 import SearchBar from "../componensts/SearchBar";
@@ -163,40 +164,43 @@ export default function MenuScreen({ navigation }) {
         animationType="fade"
         onRequestClose={() => setShowModal(false)}
       >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>{selectedDish?.name}</Text>
-              <TouchableOpacity 
-                style={styles.removeButton}
-                onPress={() => {
-                  if (selectedDish) toggleSelect(selectedDish);
-                }}
-              >
-                <Text style={styles.removeButtonText}>Remove</Text>
-              </TouchableOpacity>
-            </View>
-            
-            <Image 
-              source={{ uri: selectedDish?.image || 'https://via.placeholder.com/300x200' }} 
-              style={styles.modalImage} 
-            />
-            
-            <Text style={styles.modalDescription}>
-              North Indian {selectedDish?.name} is a dish made from chicken marinated shgdhsdhgdshd is a dish made from chicken marinated
-            </Text>
-            
-            <TouchableOpacity 
-              style={styles.ingredientButton}
-              onPress={() => {
-                setShowModal(false);
-                navigation.navigate("Ingredient", { dish: selectedDish });
-              }}
-            >
-              <Text style={styles.ingredientButtonText}>Ingredient</Text>
-            </TouchableOpacity>
+        <TouchableWithoutFeedback onPress={() => setShowModal(false)}>
+          <View style={styles.modalOverlay}>
+            <TouchableWithoutFeedback>
+              <View style={styles.modalContent}>
+                <View style={styles.modalHeader}>
+                  <Text style={styles.modalTitle}>{selectedDish?.name}</Text>
+                  <TouchableOpacity 
+                    style={selectedDish && selected.includes(selectedDish.id) ? styles.removeButton : styles.addButton}
+                    onPress={() => {
+                      if (selectedDish) toggleSelect(selectedDish);
+                    }}
+                  >
+                    <Text style={selectedDish && selected.includes(selectedDish.id) ? styles.removeButtonText : styles.addButtonText}>
+                      {selectedDish && selected.includes(selectedDish.id) ? 'Remove' : 'Add +'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <Image 
+                  source={{ uri: selectedDish?.image || 'https://via.placeholder.com/300x200' }} 
+                  style={styles.modalImage} 
+                />
+                <Text style={styles.modalDescription}>
+                  North Indian {selectedDish?.name} is a dish made from chicken marinated shgdhsdhgdshd is a dish made from chicken marinated
+                </Text>
+                <TouchableOpacity 
+                  style={styles.ingredientButton}
+                  onPress={() => {
+                    setShowModal(false);
+                    navigation.navigate("Ingredient", { dish: selectedDish });
+                  }}
+                >
+                  <Text style={styles.ingredientButtonText}>Ingredient</Text>
+                </TouchableOpacity>
+              </View>
+            </TouchableWithoutFeedback>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Modal>
 
   {/* ...existing code... */}

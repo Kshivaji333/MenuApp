@@ -29,19 +29,15 @@ const styles = StyleSheet.create({
       paddingHorizontal: 12,
       paddingVertical: 4,
     },
-  container: {
-    marginHorizontal: 16,
-    marginVertical: 8,
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 2,
-    elevation: 2,
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-  },
+    container: {
+      marginHorizontal: 16,
+      marginVertical: 8,
+      backgroundColor: '#fff',
+      borderRadius: 12,
+      paddingHorizontal: 8,
+      paddingVertical: 2,
+      // Removed shadow and elevation for a flat look
+    },
   input: {
     backgroundColor: '#F5F5F5',
     borderRadius: 10,
