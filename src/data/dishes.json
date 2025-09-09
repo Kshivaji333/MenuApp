@@ -1,23 +1,63 @@
 [
-    {
-  "categoryId": 1,
-  "mealType": "MAIN COURSE",
-  "type": "VEG",
-  "description": "Paneer cubes in spicy onion gravy with onions and capsicum cubes.",
-  "image": "tandoori_chicken",
-  "category": {
+  {
+    "categoryId": 1,
+    "mealType": "MAIN COURSE",
+    "type": "NON_VEG",
+    "description": "Tandoori chicken is a dish made from chicken marinated in yogurt and spices, roasted in a clay oven.",
+    "image": "tandoori_chicken",
+    "category": {
+      "id": 1,
+      "name": "North Indian",
+      "image": "https://storage.googleapis.com/chefkartimages/customer_app_assets/star_chef/north_indian.png",
+      "isRecommendedForMealSuggestion": true
+    },
+    "dishType": "CURRY",
+    "forChefit": true,
+    "forParty": true,
+    "nameHi": "",
+    "nameBn": "",
     "id": 1,
-    "name": "North Indian",
-    "image": "https://storage.googleapis.com/chefkartimages/customer_app_assets/star_chef/north_indian.png",
-    "isRecommendedForMealSuggestion": true
+    "name": "Tandoori Chicken"
   },
-  "dishType": "CURRY",
-  "forChefit": true,
-  "forParty": true,
-  "nameHi": "",
-  "nameBn": "",
-  "id": 1,
-  "name": "tandoori_chicken"
-}
-
+  {
+    "categoryId": 1,
+    "mealType": "MAIN COURSE",
+    "type": "VEG",
+    "description": "Dal makhani is an Indian dish originating from the Punjab region, made with whole black lentils and red kidney beans.",
+    "image": "dal_makhni",
+    "category": {
+      "id": 1,
+      "name": "North Indian",
+      "image": "https://storage.googleapis.com/chefkartimages/customer_app_assets/star_chef/north_indian.png",
+      "isRecommendedForMealSuggestion": true
+    },
+    "dishType": "CURRY",
+    "forChefit": true,
+    "forParty": true,
+    "nameHi": "",
+    "nameBn": "",
+    "id": 2,
+    "name": "Dal Makhni"
+  },
+  {
+    "categoryId": 1,
+    "mealType": "MAIN COURSE",
+    "type": "VEG",
+    "description": "Cabbage, comprising several cultivars of Brassica oleracea, is a leafy green vegetable used in Indian curries.",
+    "image": "cabbage",
+    "category": {
+      "id": 1,
+      "name": "North Indian",
+      "image": "https://storage.googleapis.com/chefkartimages/customer_app_assets/star_chef/north_indian.png",
+      "isRecommendedForMealSuggestion": true
+    },
+    "dishType": "CURRY",
+    "forChefit": true,
+    "forParty": true,
+    "nameHi": "",
+    "nameBn": "",
+    "id": 3,
+    "name": "Cabbage"
+  }
 ]
+
