@@ -1,10 +1,14 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { imageMap } from '../images/imageMap'; 
 
 const DishCard = ({ dish, isSelected, onToggleSelect, onViewIngredients, onViewDetails }) => {
   const getTypeColor = (type) => {
     return type === 'NON_VEG' ? '#FF4444' : '#4CAF50';
   };
+
+  // get image from mapping (fallback to default if not found)
+  const imageSource = imageMap[dish.image] || imageMap.default;
 
   return (
     <View style={styles.container}>
@@ -29,9 +33,10 @@ const DishCard = ({ dish, isSelected, onToggleSelect, onViewIngredients, onViewD
           <Text style={styles.ingredientText}>🍴 Ingredient</Text>
         </TouchableOpacity>
       </View>
+
       {/* Right side: Image and Add button */}
       <View style={styles.rightContent}>
-        <Image source={{ uri: dish.image || 'https://via.placeholder.com/100x100' }} style={styles.image} />
+        <Image source={imageSource} style={styles.image} />
         <TouchableOpacity 
           style={[styles.addButton, isSelected && styles.removeButton]}
           onPress={() => onToggleSelect(dish)}
@@ -49,7 +54,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     backgroundColor: '#fff',
-    marginHorizontal: 0,
     marginBottom: 10,
     borderRadius: 12,
     padding: 12,
@@ -62,8 +66,6 @@ const styles = StyleSheet.create({
   },
   leftContent: {
     flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
     paddingRight: 8,
   },
   headerRow: {
@@ -75,7 +77,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '600',
     color: '#222',
-    flexShrink: 1,
     marginRight: 4,
   },
   typeDot: {
@@ -95,7 +96,6 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 12,
     color: '#666',
-    flexShrink: 1,
     maxWidth: 120,
   },
   readMore: {
@@ -106,19 +106,14 @@ const styles = StyleSheet.create({
   },
   ingredientButton: {
     marginTop: 6,
-    marginBottom: 0,
-    paddingHorizontal: 0,
-    paddingVertical: 0,
   },
   ingredientText: {
     fontSize: 13,
     color: '#FF6B35',
     fontWeight: '600',
-    textDecorationLine: 'none',
   },
   rightContent: {
     alignItems: 'center',
-    justifyContent: 'flex-start',
     minWidth: 90,
   },
   image: {
@@ -135,12 +130,10 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     borderWidth: 1,
     borderColor: '#4CAF50',
-    alignSelf: 'center',
   },
   removeButton: {
     backgroundColor: '#FFE6E6',
     borderColor: '#FF4444',
-    borderWidth: 1,
   },
   addButtonText: {
     color: '#4CAF50',
