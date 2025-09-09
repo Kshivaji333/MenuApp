@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { 
-  View, 
-  Text, 
-  FlatList, 
-  TouchableOpacity, 
-  StyleSheet, 
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
   SafeAreaView,
   Modal,
   Image,
@@ -51,28 +51,19 @@ export default function MenuScreen({ navigation }) {
     setShowModal(true);
   };
 
-  const getCurrentTime = () => {
-    const now = new Date();
-    return now.toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
-      minute: '2-digit',
-      hour12: true 
-    });
-  };
-
   const filteredDishes = dishes.filter(dish => {
-  const matchesCategory = dish.mealType === (activeCategory === 1 ? "STARTER" : 
-                         activeCategory === 2 ? "MAIN COURSE" :
-                         activeCategory === 3 ? "DESSERT" : "SIDES");
-  const matchesSearch = dish.name.toLowerCase().includes(searchText.toLowerCase());
-  const matchesVeg = vegFilter && dish.type === "VEG";
-  const matchesNonVeg = nonVegFilter && dish.type === "NON_VEG";
-  const matchesType = (vegFilter && nonVegFilter) ? true : (matchesVeg || matchesNonVeg);
-  return matchesCategory && matchesSearch && matchesType;
+    const matchesCategory = dish.mealType === (activeCategory === 1 ? "STARTER" :
+      activeCategory === 2 ? "MAIN COURSE" :
+        activeCategory === 3 ? "DESSERT" : "SIDES");
+    const matchesSearch = dish.name.toLowerCase().includes(searchText.toLowerCase());
+    const matchesVeg = vegFilter && dish.type === "VEG";
+    const matchesNonVeg = nonVegFilter && dish.type === "NON_VEG";
+    const matchesType = (vegFilter && nonVegFilter) ? true : (matchesVeg || matchesNonVeg);
+    return matchesCategory && matchesSearch && matchesType;
   });
 
   const getCategoryName = () => {
-    switch(activeCategory) {
+    switch (activeCategory) {
       case 1: return "Starters";
       case 2: return "Main Courses";
       case 3: return "Desserts";
@@ -84,9 +75,9 @@ export default function MenuScreen({ navigation }) {
   const getCategoryCount = () => {
     return selected.filter(id => {
       const dish = dishes.find(d => d.id === id);
-      return dish?.mealType === (activeCategory === 1 ? "STARTER" : 
-                                 activeCategory === 2 ? "MAIN COURSE" :
-                                 activeCategory === 3 ? "DESSERT" : "SIDES");
+      return dish?.mealType === (activeCategory === 1 ? "STARTER" :
+        activeCategory === 2 ? "MAIN COURSE" :
+          activeCategory === 3 ? "DESSERT" : "SIDES");
     }).length;
   };
 
@@ -95,12 +86,12 @@ export default function MenuScreen({ navigation }) {
 
       {/* Top Controls: Search, Tabs, Summary */}
       <View style={styles.topControls}>
-        <SearchBar 
+        <SearchBar
           value={searchText}
           onChangeText={setSearchText}
           placeholder="< Search dish for your party......"
         />
-        <CategoryTabs 
+        <CategoryTabs
           categories={categories}
           activeCategory={activeCategory}
           onCategorySelect={setActiveCategory}
@@ -109,6 +100,7 @@ export default function MenuScreen({ navigation }) {
           <Text style={styles.selectionText}>
             {getCategoryName()} Selected ({getCategoryCount()})
           </Text>
+
           <View style={styles.toggleContainer}>
             {/* Veg Switch */}
             <TouchableOpacity
@@ -117,6 +109,7 @@ export default function MenuScreen({ navigation }) {
             >
               <View style={[styles.knob, vegFilter ? styles.knobVeg : styles.knobInactive, { left: vegFilter ? 18 : 4 }]} />
             </TouchableOpacity>
+
             {/* Non-Veg Switch */}
             <TouchableOpacity
               style={[styles.switch, nonVegFilter ? styles.switchActiveNonVeg : styles.switchInactive]}
@@ -124,27 +117,25 @@ export default function MenuScreen({ navigation }) {
             >
               <View style={[styles.knob, nonVegFilter ? styles.knobNonVeg : styles.knobInactive, { left: nonVegFilter ? 18 : 4 }]} />
             </TouchableOpacity>
+
           </View>
         </View>
       </View>
 
-  {/* Dish List */}
+      {/* Dish List */}
+      <ScrollView style={styles.dishList}>
 
-      <FlatList
-        data={filteredDishes}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
+        {filteredDishes.map((item) => (
           <DishCard
+            key={item.id}
             dish={item}
             isSelected={selected.includes(item.id)}
             onToggleSelect={toggleSelect}
             onViewIngredients={handleViewIngredients}
             onViewDetails={handleViewDetails}
           />
-        )}
-        style={styles.dishList}
-        showsVerticalScrollIndicator={false}
-      />
+        ))}
+      </ScrollView>
 
       {/* Footer */}
       <View style={styles.footer}>
@@ -170,7 +161,7 @@ export default function MenuScreen({ navigation }) {
               <View style={styles.modalContent}>
                 <View style={styles.modalHeader}>
                   <Text style={styles.modalTitle}>{selectedDish?.name}</Text>
-                  <TouchableOpacity 
+                  <TouchableOpacity
                     style={selectedDish && selected.includes(selectedDish.id) ? styles.removeButton : styles.addButton}
                     onPress={() => {
                       if (selectedDish) toggleSelect(selectedDish);
@@ -181,9 +172,9 @@ export default function MenuScreen({ navigation }) {
                     </Text>
                   </TouchableOpacity>
                 </View>
-                <Image 
-                  source={{ uri: selectedDish?.image || 'https://via.placeholder.com/300x200' }} 
-                  style={styles.modalImage} 
+                <Image
+                  source={{ uri: selectedDish?.image || 'https://via.placeholder.com/300x200' }}
+                  style={styles.modalImage}
                 />
                 <Text style={styles.modalDescription}>
                   {selectedDish?.description}
@@ -204,7 +195,7 @@ export default function MenuScreen({ navigation }) {
                   <Text style={{ fontSize: 14, color: '#333' }}>For Party: <Text style={{ fontWeight: 'bold' }}>{selectedDish?.forParty ? 'Yes' : 'No'}</Text></Text>
                   <Text style={{ fontSize: 14, color: '#333' }}>For Chefit: <Text style={{ fontWeight: 'bold' }}>{selectedDish?.forChefit ? 'Yes' : 'No'}</Text></Text>
                 </View>
-                <TouchableOpacity 
+                <TouchableOpacity
                   style={styles.ingredientButton}
                   onPress={() => {
                     setShowModal(false);
@@ -219,7 +210,7 @@ export default function MenuScreen({ navigation }) {
         </TouchableWithoutFeedback>
       </Modal>
 
-  {/* ...existing code... */}
+      {/* ...existing code... */}
     </SafeAreaView>
   );
 }
