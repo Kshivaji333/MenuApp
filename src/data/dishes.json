@@ -58,6 +58,305 @@
     "nameBn": "",
     "id": 3,
     "name": "Cabbage"
+  },
+  {
+    "categoryId": 1,
+    "mealType": "MAIN COURSE",
+    "type": "NON_VEG",
+    "description": "Butter chicken is a popular North Indian curry made with tender chicken in a creamy tomato-based sauce flavored with butter and spices.",
+    "image": "butter_chicken",
+    "category": {
+      "id": 1,
+      "name": "North Indian",
+      "image": "https://storage.googleapis.com/chefkartimages/customer_app_assets/star_chef/north_indian.png",
+      "isRecommendedForMealSuggestion": true
+    },
+    "dishType": "CURRY",
+    "forChefit": true,
+    "forParty": true,
+    "nameHi": "",
+    "nameBn": "",
+    "id": 4,
+    "name": "Butter Chicken"
+  },
+  {
+    "categoryId": 1,
+    "mealType": "MAIN COURSE",
+    "type": "VEG",
+    "description": "Paneer butter masala is a rich vegetarian curry featuring soft paneer cubes in a buttery tomato gravy with aromatic spices.",
+    "image": "paneer_butter_masala",
+    "category": {
+      "id": 1,
+      "name": "North Indian",
+      "image": "https://storage.googleapis.com/chefkartimages/customer_app_assets/star_chef/north_indian.png",
+      "isRecommendedForMealSuggestion": true
+    },
+    "dishType": "CURRY",
+    "forChefit": true,
+    "forParty": true,
+    "nameHi": "",
+    "nameBn": "",
+    "id": 5,
+    "name": "Paneer Butter Masala"
+  },
+  {
+    "categoryId": 1,
+    "mealType": "MAIN COURSE",
+    "type": "NON_VEG",
+    "description": "Rogan josh is a flavorful lamb curry from Kashmir, slow-cooked with yogurt, fennel, and aromatic spices for a deep red color and rich taste.",
+    "image": "rogan_josh",
+    "category": {
+      "id": 1,
+      "name": "North Indian",
+      "image": "https://storage.googleapis.com/chefkartimages/customer_app_assets/star_chef/north_indian.png",
+      "isRecommendedForMealSuggestion": true
+    },
+    "dishType": "CURRY",
+    "forChefit": true,
+    "forParty": true,
+    "nameHi": "",
+    "nameBn": "",
+    "id": 6,
+    "name": "Rogan Josh"
+  },
+  {
+    "categoryId": 1,
+    "mealType": "DESSERT",
+    "type": "VEG",
+    "description": "Gulab jamun are soft milk-based dough balls deep-fried and soaked in sugar syrup, a classic sweet treat often served warm.",
+    "image": "gulab_jamun",
+    "category": {
+      "id": 1,
+      "name": "North Indian",
+      "image": "https://storage.googleapis.com/chefkartimages/customer_app_assets/star_chef/north_indian.png",
+      "isRecommendedForMealSuggestion": true
+    },
+    "dishType": "SWEET",
+    "forChefit": true,
+    "forParty": true,
+    "nameHi": "",
+    "nameBn": "",
+    "id": 7,
+    "name": "Gulab Jamun"
+  },
+  {
+    "categoryId": 1,
+    "mealType": "DESSERT",
+    "type": "VEG",
+    "description": "Kulfi is a traditional frozen dairy dessert similar to ice cream, made with condensed milk and flavored with cardamom and pistachios.",
+    "image": "kulfi",
+    "category": {
+      "id": 1,
+      "name": "North Indian",
+      "image": "https://storage.googleapis.com/chefkartimages/customer_app_assets/star_chef/north_indian.png",
+      "isRecommendedForMealSuggestion": true
+    },
+    "dishType": "SWEET",
+    "forChefit": true,
+    "forParty": true,
+    "nameHi": "",
+    "nameBn": "",
+    "id": 8,
+    "name": "Kulfi"
+  },
+  {
+    "categoryId": 1,
+    "mealType": "DESSERT",
+    "type": "VEG",
+    "description": "Ras malai consists of soft chhena balls soaked in sweetened, thickened milk flavored with cardamom and garnished with nuts.",
+    "image": "ras_malai",
+    "category": {
+      "id": 1,
+      "name": "North Indian",
+      "image": "https://storage.googleapis.com/chefkartimages/customer_app_assets/star_chef/north_indian.png",
+      "isRecommendedForMealSuggestion": true
+    },
+    "dishType": "SWEET",
+    "forChefit": true,
+    "forParty": true,
+    "nameHi": "",
+    "nameBn": "",
+    "id": 9,
+    "name": "Ras Malai"
+  },
+  {
+    "categoryId": 1,
+    "mealType": "DESSERT",
+    "type": "VEG",
+    "description": "Jalebi is a crispy, pretzel-shaped sweet made from fermented batter, deep-fried and immersed in sugar syrup.",
+    "image": "jalebi",
+    "category": {
+      "id": 1,
+      "name": "North Indian",
+      "image": "https://storage.googleapis.com/chefkartimages/customer_app_assets/star_chef/north_indian.png",
+      "isRecommendedForMealSuggestion": true
+    },
+    "dishType": "SWEET",
+    "forChefit": true,
+    "forParty": true,
+    "nameHi": "",
+    "nameBn": "",
+    "id": 10,
+    "name": "Jalebi"
+  },
+  {
+    "categoryId": 1,
+    "mealType": "SIDES",
+    "type": "VEG",
+    "description": "Naan is a soft, leavened flatbread baked in a tandoor oven, often topped with butter or garlic.",
+    "image": "naan",
+    "category": {
+      "id": 1,
+      "name": "North Indian",
+      "image": "https://storage.googleapis.com/chefkartimages/customer_app_assets/star_chef/north_indian.png",
+      "isRecommendedForMealSuggestion": true
+    },
+    "dishType": "ACCOMPANIMENT",
+    "forChefit": true,
+    "forParty": true,
+    "nameHi": "",
+    "nameBn": "",
+    "id": 11,
+    "name": "Naan"
+  },
+  {
+    "categoryId": 1,
+    "mealType": "SIDES",
+    "type": "VEG",
+    "description": "Raita is a cooling yogurt-based side dish mixed with cucumbers, onions, or boondi and seasoned with cumin and mint.",
+    "image": "raita",
+    "category": {
+      "id": 1,
+      "name": "North Indian",
+      "image": "https://storage.googleapis.com/chefkartimages/customer_app_assets/star_chef/north_indian.png",
+      "isRecommendedForMealSuggestion": true
+    },
+    "dishType": "ACCOMPANIMENT",
+    "forChefit": true,
+    "forParty": true,
+    "nameHi": "",
+    "nameBn": "",
+    "id": 12,
+    "name": "Raita"
+  },
+  {
+    "categoryId": 1,
+    "mealType": "SIDES",
+    "type": "VEG",
+    "description": "Papad is a thin, crispy lentil wafer roasted or fried, often served as an appetizer or side with meals.",
+    "image": "papad",
+    "category": {
+      "id": 1,
+      "name": "North Indian",
+      "image": "https://storage.googleapis.com/chefkartimages/customer_app_assets/star_chef/north_indian.png",
+      "isRecommendedForMealSuggestion": true
+    },
+    "dishType": "ACCOMPANIMENT",
+    "forChefit": true,
+    "forParty": true,
+    "nameHi": "",
+    "nameBn": "",
+    "id": 13,
+    "name": "Papad"
+  },
+  {
+    "categoryId": 1,
+    "mealType": "SIDES",
+    "type": "VEG",
+    "description": "Achaar is a spicy Indian pickle made from mangoes, lemons, or mixed vegetables, providing a tangy contrast to main dishes.",
+    "image": "achaar",
+    "category": {
+      "id": 1,
+      "name": "North Indian",
+      "image": "https://storage.googleapis.com/chefkartimages/customer_app_assets/star_chef/north_indian.png",
+      "isRecommendedForMealSuggestion": true
+    },
+    "dishType": "ACCOMPANIMENT",
+    "forChefit": true,
+    "forParty": true,
+    "nameHi": "",
+    "nameBn": "",
+    "id": 14,
+    "name": "Achaar"
+  },
+  {
+    "categoryId": 1,
+    "mealType": "STARTER",
+    "type": "VEG",
+    "description": "Paneer Tikka is a popular North Indian starter made with marinated paneer cubes grilled with vegetables and spices.",
+    "image": "paneer_tikka",
+    "category": {
+      "id": 1,
+      "name": "North Indian",
+      "image": "https://storage.googleapis.com/chefkartimages/customer_app_assets/star_chef/north_indian.png",
+      "isRecommendedForMealSuggestion": true
+    },
+    "dishType": "TIKKA",
+    "forChefit": true,
+    "forParty": true,
+    "nameHi": "",
+    "nameBn": "",
+    "id": 15,
+    "name": "Paneer Tikka"
+  },
+  {
+    "categoryId": 1,
+    "mealType": "STARTER",
+    "type": "NON_VEG",
+    "description": "Chicken Tikka features boneless chicken pieces marinated in yogurt and spices, grilled to perfection for a smoky flavor.",
+    "image": "chicken_tikka",
+    "category": {
+      "id": 1,
+      "name": "North Indian",
+      "image": "https://storage.googleapis.com/chefkartimages/customer_app_assets/star_chef/north_indian.png",
+      "isRecommendedForMealSuggestion": true
+    },
+    "dishType": "TIKKA",
+    "forChefit": true,
+    "forParty": true,
+    "nameHi": "",
+    "nameBn": "",
+    "id": 16,
+    "name": "Chicken Tikka"
+  },
+  {
+    "categoryId": 1,
+    "mealType": "STARTER",
+    "type": "VEG",
+    "description": "Gobi Pakora are crispy cauliflower fritters coated in a spiced chickpea batter and deep-fried, a favorite North Indian snack.",
+    "image": "gobi_pakora",
+    "category": {
+      "id": 1,
+      "name": "North Indian",
+      "image": "https://storage.googleapis.com/chefkartimages/customer_app_assets/star_chef/north_indian.png",
+      "isRecommendedForMealSuggestion": true
+    },
+    "dishType": "PAKORA",
+    "forChefit": true,
+    "forParty": true,
+    "nameHi": "",
+    "nameBn": "",
+    "id": 17,
+    "name": "Gobi Pakora"
+  },
+  {
+    "categoryId": 1,
+    "mealType": "STARTER",
+    "type": "NON_VEG",
+    "description": "Seekh Kebab is made from minced meat mixed with spices, shaped onto skewers, and grilled in a tandoor for a juicy texture.",
+    "image": "seekh_kebab",
+    "category": {
+      "id": 1,
+      "name": "North Indian",
+      "image": "https://storage.googleapis.com/chefkartimages/customer_app_assets/star_chef/north_indian.png",
+      "isRecommendedForMealSuggestion": true
+    },
+    "dishType": "KEBAB",
+    "forChefit": true,
+    "forParty": true,
+    "nameHi": "",
+    "nameBn": "",
+    "id": 18,
+    "name": "Seekh Kebab"
   }
 ]
-
