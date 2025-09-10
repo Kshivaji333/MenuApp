@@ -304,13 +304,14 @@ const styles = StyleSheet.create({
   toggleContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
+
+    gap: 5,
   },
 
   // switch container (outer)
   switch: {
-    width: 54,
-    height: 32,
+    width: 50,
+    height: 26,
     borderRadius: 16,
     backgroundColor: '#F7F7F7',
     borderWidth: 2,
@@ -338,13 +339,14 @@ const styles = StyleSheet.create({
 
   // track (background inside the pill)
   switchTrack: {
+  
     position: 'absolute',
     left: 4,
     right: 4,
-    top: 12,
-    height: 8,
+    top: 6.5,
+    height: 10,
     borderRadius: 4,
-    backgroundColor: '#EFEFEF',
+    backgroundColor: '#eeeeee',
     zIndex: 0,
     borderWidth: 1,
     borderColor: '#E6E6E6',
@@ -353,10 +355,10 @@ const styles = StyleSheet.create({
   // knob (animated)
   knob: {
     position: 'absolute',
-    top: 4,
-    width: 24,
-    height: 24,
-    borderRadius: 8,
+    top: 3,
+    width: "32%",
+    height: 16,
+    borderRadius: 3,
     backgroundColor: '#fff',
     borderWidth: 2,
     justifyContent: 'center',
@@ -373,8 +375,8 @@ const styles = StyleSheet.create({
     opacity: 0.95,
   },
   knobDot: {
-    width: 12,
-    height: 12,
+    width: 8,
+    height: 8,
     borderRadius: 6,
     alignSelf: 'center',
   },
@@ -394,8 +396,7 @@ const styles = StyleSheet.create({
   footerLeft: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    width: '100%',
+    justifyContent: "space-between",
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderTopWidth: 1,
@@ -406,10 +407,9 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 2,
     position: 'absolute',
-    bottom: 10,
+    bottom: 70,
     left: 0,
     right: 0,
-    marginHorizontal: 0,
   },
 
   totalText: {
@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 2,
-    width: '100%',
+    width: '95%',
   },
   continueButtonText: {
     textAlign: "center",
