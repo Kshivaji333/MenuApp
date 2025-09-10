@@ -15,6 +15,7 @@ import dishes from "../data/dishes.json";
 import SearchBar from "../componensts/SearchBar";
 import CategoryTabs from "../componensts/CategoryTabs";
 import DishCard from "../componensts/DishCard";
+import { RollInLeft } from "react-native-reanimated";
 
 export default function MenuScreen({ navigation }) {
   const [selected, setSelected] = useState([]);
@@ -258,39 +259,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#eee',
   },
   topControls: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#fff',
     paddingBottom: 4,
     marginBottom: 2,
-    gap: 10,
+    gap: 15,
   },
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingTop: 8,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderBottomWidth: 0,
-    backgroundColor: "#fff",
-  },
-  timeText: {
-    fontSize: 14,
-    color: "#666",
-    fontWeight: "500",
+    padding: 10,
   },
   title: {
+    fontFamily: "Open Sans",
     fontSize: 18,
     fontWeight: "bold",
-    color: "#333",
+    color: "#1C1C1C",
     letterSpacing: 0.5,
   },
-  headerRight: {
-    width: 60,
-  },
+
   selectionSummary: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -300,11 +289,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderBottomWidth: 1,
     borderBottomColor: "#f0f0f0",
+    width: '100%',
   },
   selectionText: {
     fontSize: 15,
-    fontWeight: "500",
+    fontWeight: "700",
     color: "#333",
+    fontFamily: "Open Sans",
     letterSpacing: 0.2,
   },
   toggleContainer: {
@@ -339,42 +330,45 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#f0f0f0",
   },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#333",
-    letterSpacing: 0.2,
-  },
   arrow: {
     fontSize: 16,
     color: "#666",
     fontWeight: "bold",
   },
+
   dishList: {
     flex: 1,
-    paddingTop: 4,
+    padding: 5,
     backgroundColor: "#fff",
   },
   footer: {
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderTopWidth: 1,
-    borderTopColor: "#f0f0f0",
-    backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 2,
+
   },
+
   footerLeft: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
+    width: '100%',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderTopWidth: 1,
+    borderTopColor: "#f0f0f0",
+    backgroundColor: "#fffaf4",
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 2,
+    position:'obselute',
+    bottom:10,
+    left:0,
+    right:0,
+    marginHorizontal:0,
   },
+
   totalText: {
     fontSize: 15,
     fontWeight: "500",
@@ -382,17 +376,20 @@ const styles = StyleSheet.create({
     letterSpacing: 0.2,
   },
   continueButton: {
+    textAlign: "center",
     backgroundColor: "#222",
-    paddingHorizontal: 32,
     paddingVertical: 12,
+    marginBottom: 15,
     borderRadius: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 2,
+    width: '100%',
   },
   continueButtonText: {
+    textAlign: "center",
     color: "#fff",
     fontSize: 16,
     fontWeight: "600",
@@ -436,6 +433,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 6,
+    
   },
   removeButtonText: {
     color: "#fff",
@@ -474,35 +472,5 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  signupText: {
-    color: "#fff",
-    fontSize: 14,
-    flex: 1,
-  },
-  signupButtons: {
-    flexDirection: "row",
-    gap: 8,
-  },
-  signupButton: {
-    backgroundColor: "#fff",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 4,
-  },
-  signupButtonText: {
-    color: "#2196F3",
-    fontSize: 12,
-    fontWeight: "600",
-  },
-  continueButtonSmall: {
-    backgroundColor: "#1976D2",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 4,
-  },
-  continueButtonSmallText: {
-    color: "#fff",
-    fontSize: 12,
-    fontWeight: "600",
-  },
+ 
 });
