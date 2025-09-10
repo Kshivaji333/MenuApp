@@ -1,39 +1,30 @@
 import React from "react";
-import { View, Text, StyleSheet, SafeAreaView, TouchableOpacity, Image } from "react-native";
-
+import { View, Text, StyleSheet, TouchableOpacity, Image, FlatList } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { imageMap } from "../images/imageMap";
 export default function IngredientScreen({ route, navigation }) {
   const { dish } = route.params;
 
-  const getCurrentTime = () => {
-    const now = new Date();
-    return now.toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
-      minute: '2-digit',
-      hour12: true 
-    });
-  };
-
   const ingredients = [
-    // You can replace this with dish.ingredients if available in future
     { name: "Cauliflower", quantity: "01 Pc" },
     { name: "Mustard oil", quantity: "1/2 litres" },
+    { name: "Cauliflower", quantity: "01 Pc" },
     { name: "Tomato", quantity: "01 Pc" },
-    { name: "Paneer", quantity: "200 gm" },
   ];
+
+  const renderIngredient = ({ item, index }) => (
+    <View style={[styles.ingredientRow, index === ingredients.length - 1 && styles.noBorder]}>
+      <Text style={styles.ingredientName}>{item.name}</Text>
+      <Text style={styles.ingredientQuantity}>{item.quantity}</Text>
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.timeText}>{getCurrentTime()}</Text>
-        <Text style={styles.title}>Summary -Trial Journey</Text>
-        <View style={styles.headerRight} />
-      </View>
-
-      {/* Navigation */}
-      <View style={styles.navigation}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={styles.backArrow}>←</Text>
+      {/* Navigation Header */}
+      <View style={styles.navBar}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Text style={styles.backArrow}>‹</Text>
         </TouchableOpacity>
         <Text style={styles.navTitle}>Ingredient list</Text>
       </View>
@@ -41,14 +32,18 @@ export default function IngredientScreen({ route, navigation }) {
       {/* Dish Info */}
       <View style={styles.dishInfo}>
         <View style={styles.dishText}>
-          <Text style={styles.dishTitle}>{dish?.name || 'Dish Name'}</Text>
-          <Text style={styles.dishDescription}>
-            {dish?.description || 'No description available.'}
+          <Text style={styles.dishTitle} numberOfLines={1} ellipsizeMode="tail">
+            {dish?.name || "Fried Avocado Tacos..."}
+          </Text>
+          <Text style={styles.dishDescription} numberOfLines={2}>
+            {dish?.description ||
+              "Panco fried avocado, Mayo, panco fried avocado, Mayo, Panco fried avocado, Mayo, Panco fried avocado..."}
           </Text>
         </View>
-        <Image 
-          source={{ uri: dish?.image || 'https://via.placeholder.com/100x100' }} 
-          style={styles.dishImage} 
+        <View style={styles.dishImageCircle} />
+        <Image
+          source={imageMap[dish?.image] || imageMap.default}
+          style={styles.dishImage}
         />
       </View>
 
@@ -56,14 +51,14 @@ export default function IngredientScreen({ route, navigation }) {
       <View style={styles.ingredientsSection}>
         <Text style={styles.ingredientsTitle}>Ingredients</Text>
         <Text style={styles.ingredientsSubtitle}>For 2 people</Text>
-        
-        <View style={styles.ingredientsList}>
-          {ingredients.map((ingredient, index) => (
-            <View key={index} style={styles.ingredientItem}>
-              <Text style={styles.ingredientName}>{ingredient.name}</Text>
-              <Text style={styles.ingredientQuantity}>{ingredient.quantity}</Text>
-            </View>
-          ))}
+        <View style={styles.divider} />
+        <View style={styles.ingredientsBox}>
+          <FlatList
+            data={ingredients}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={renderIngredient}
+            scrollEnabled={false}
+          />
         </View>
       </View>
     </SafeAreaView>
@@ -75,105 +70,119 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
-  },
-  timeText: {
-    fontSize: 16,
-    color: "#666",
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  headerRight: {
-    width: 60,
-  },
-  navigation: {
+  navBar: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 16,
+    justifyContent: "flex-start",
     paddingVertical: 12,
+    paddingHorizontal: 16,
     borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
+    borderBottomColor: "#eee",
+  },
+  backButton: {
+    marginRight: 8,
   },
   backArrow: {
-    fontSize: 20,
-    color: "#333",
-    marginRight: 12,
+    fontSize: 30,
+    color: "#000",
   },
   navTitle: {
-    fontSize: 16,
-    fontWeight: "500",
-    color: "#333",
+    fontSize: 25,
+    fontWeight: "600",
+    color: "#000",
   },
   dishInfo: {
     flexDirection: "row",
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
+    alignItems: "flex-start",
+    padding: 16,
+    position: "relative",
+    minHeight: 110,
+    width: "100%",
   },
   dishText: {
     flex: 1,
-    marginRight: 16,
+    paddingRight: 0,
+    justifyContent: "center",
   },
   dishTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#333",
-    marginBottom: 8,
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#222",
+    marginBottom: 2,
+    maxWidth: 160,
   },
   dishDescription: {
-    fontSize: 14,
-    color: "#666",
-    lineHeight: 20,
+    fontSize: 15,
+    color: "#555",
+    lineHeight: 17,
+    maxWidth: 250,
+    marginBottom: 2,
   },
   dishImage: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
+    width: 150,
+    height: 150,
+    borderRadius: 15,
+    position: "absolute",
+    right: 16,
+    top: 8,
+    borderWidth: 1,
+    borderColor: "#eee",
+    backgroundColor: "#fff",
+    resizeMode: "cover",
+  },
+  dishImageCircle: {
+    position: "absolute",
+    right: 8,
+    top: 0,
+    width: 110,
+    height: 110,
+    borderRadius: 55,
+    backgroundColor: "#f7f7f7",
+    zIndex: 0,
   },
   ingredientsSection: {
     paddingHorizontal: 16,
-    paddingVertical: 16,
+    marginTop: 8,
   },
   ingredientsTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: 4,
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#222",
+    marginBottom: 2,
   },
   ingredientsSubtitle: {
-    fontSize: 14,
-    color: "#666",
-    marginBottom: 16,
+    fontSize: 13,
+    color: "#555",
+    marginBottom: 10,
   },
-  ingredientsList: {
-    gap: 12,
+  divider: {
+    height: 1,
+    backgroundColor: "#eee",
+    marginVertical: 8,
   },
-  ingredientItem: {
+  ingredientsBox: {
+    borderWidth: 0,
+    borderColor: "#eee",
+    backgroundColor: "#fff",
+    borderRadius: 6,
+    marginTop: 0,
+  },
+  ingredientRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
     paddingVertical: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
+    paddingHorizontal: 6,
+    borderBottomWidth: 0,
+  },
+  noBorder: {
+    borderBottomWidth: 0,
   },
   ingredientName: {
-    fontSize: 16,
-    color: "#333",
-    fontWeight: "500",
+    fontSize: 14,
+    color: "#222",
   },
   ingredientQuantity: {
     fontSize: 14,
-    color: "#666",
+    color: "#222",
   },
 });
