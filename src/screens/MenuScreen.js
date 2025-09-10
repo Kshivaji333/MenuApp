@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
   },
   switchActiveVeg: {
     borderColor: 'transparent',
-  },s
+  },
   switchActiveNonVeg: {
     borderColor: 'transparent',
   },
