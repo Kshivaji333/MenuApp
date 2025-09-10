@@ -220,7 +220,7 @@ function CustomToggle({ active, onToggle, color = "#4CAF50", ariaLabel = "toggle
       accessibilityLabel={ariaLabel}
       activeOpacity={0.8}
       onPress={onToggle}
-      style={[styles.switch, active ? { borderColor: color } : styles.switchInactive]}
+      style={[styles.switch, active ? { borderColor: 'transparent' } : styles.switchInactive]}
     >
       <View style={styles.switchTrack} />
       <Animated.View style={[styles.knob, active ? { borderColor: color } : styles.knobInactive, { left: anim }]}>
@@ -275,7 +275,18 @@ const styles = StyleSheet.create({
     borderColor: '#E6E6E6',
     position: 'relative',
     marginHorizontal: 8,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  switchActiveVeg: {
+    borderColor: 'transparent',
+  },s
+  switchActiveNonVeg: {
+    borderColor: 'transparent',
   },
   switchInactive: {
     borderColor: '#E6E6E6',
