@@ -155,7 +155,7 @@ export default function MenuScreen({ navigation }) {
       <View style={styles.footer}>
         <View style={styles.footerLeft}>
           <Text style={styles.totalText}>Total Dish Selected {selected.length}</Text>
-          <Text style={styles.arrow}>→</Text>
+          <Text style={styles.arrow}>{">"}</Text>
         </View>
         <TouchableOpacity style={styles.continueButton}>
           <Text style={styles.continueButtonText}>Continue</Text>
@@ -417,6 +417,11 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: "#333",
     letterSpacing: 0.2,
+  },
+  arrow: {
+    fontSize: 20,
+    color: '3d3d3d',
+    fontWeight: '300',
   },
   continueButton: {
     textAlign: "center",
