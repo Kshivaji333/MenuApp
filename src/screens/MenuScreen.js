@@ -16,6 +16,7 @@ import dishes from "../data/dishes.json";
 import SearchBar from "../componensts/SearchBar";
 import CategoryTabs from "../componensts/CategoryTabs";
 import DishCard from "../componensts/DishCard";
+import { imageMap } from '../images/imageMap';
 
 export default function MenuScreen({ navigation }) {
   const [selected, setSelected] = useState([]);
@@ -27,26 +28,10 @@ export default function MenuScreen({ navigation }) {
   const [nonVegFilter, setNonVegFilter] = useState(true);
 
   const categories = [
-    {
-      id: 1,
-      name: "Starter",
-      count: selected.filter(id => dishes.find(d => d.id === id)?.mealType === "STARTER").length
-    },
-    {
-      id: 2,
-      name: "Main Course",
-      count: selected.filter(id => dishes.find(d => d.id === id)?.mealType === "MAIN COURSE").length
-    },
-    {
-      id: 3,
-      name: "Desert",
-      count: selected.filter(id => dishes.find(d => d.id === id)?.mealType === "DESSERT").length
-    },
-    {
-      id: 4,
-      name: "Sides",
-      count: selected.filter(id => dishes.find(d => d.id === id)?.mealType === "SIDES").length
-    },
+    { id: 1, name: "Starter", count: selected.filter(id => dishes.find(d => d.id === id)?.mealType === "STARTER").length },
+    { id: 2, name: "Main Course", count: selected.filter(id => dishes.find(d => d.id === id)?.mealType === "MAIN COURSE").length },
+    { id: 3, name: "Desert", count: selected.filter(id => dishes.find(d => d.id === id)?.mealType === "DESSERT").length },
+    { id: 4, name: "Sides", count: selected.filter(id => dishes.find(d => d.id === id)?.mealType === "SIDES").length },
   ];
 
   const toggleSelect = (dish) => {
@@ -57,12 +42,10 @@ export default function MenuScreen({ navigation }) {
     }
   };
 
-  // Handler for Ingredient button
   const handleViewIngredients = (dish) => {
     navigation.navigate("Ingredient", { dish });
   };
 
-  // Handler for Read more button
   const handleViewDetails = (dish) => {
     setSelectedDish(dish);
     setShowModal(true);
@@ -100,7 +83,7 @@ export default function MenuScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Top Controls: Search, Tabs, Summary */}
+      {/* Top Controls */}
       <View style={styles.topControls}>
         <SearchBar
           value={searchText}
@@ -116,17 +99,13 @@ export default function MenuScreen({ navigation }) {
           <Text style={styles.selectionText}>
             {getCategoryName()} Selected ({getCategoryCount()})
           </Text>
-
           <View style={styles.toggleContainer}>
-            {/* Veg Switch */}
             <CustomToggle
               active={vegFilter}
               onToggle={() => setVegFilter(v => !v)}
               color="#4CAF50"
               ariaLabel="veg-filter"
             />
-
-            {/* Non-Veg Switch */}
             <CustomToggle
               active={nonVegFilter}
               onToggle={() => setNonVegFilter(nv => !nv)}
@@ -172,52 +151,46 @@ export default function MenuScreen({ navigation }) {
         <TouchableWithoutFeedback onPress={() => setShowModal(false)}>
           <View style={styles.modalOverlay}>
             <TouchableWithoutFeedback>
-              <View style={styles.modalContent}>
-                <View style={styles.modalHeader}>
-                  <Text style={styles.modalTitle}>{selectedDish?.name}</Text>
+              <View style={styles.detailPopup}>
+                <Image
+                  source={imageMap[selectedDish?.image] || imageMap.default}
+                  style={styles.detailImage}
+                />
+                <View style={styles.detailContent}>
+                  <View style={styles.detailHeader}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <Text style={styles.detailTitle}>{selectedDish?.name}</Text>
+                      <View style={styles.typeBox}>
+                        <View style={[styles.typeDot, { backgroundColor: selectedDish?.type === 'NON_VEG' ? '#ff941A' : '#4CAF50' }]} />
+                      </View>
+                    </View>
+                    <TouchableOpacity
+                      style={selectedDish && selected.includes(selectedDish.id) ? styles.removeButton : styles.addButton}
+                      onPress={() => {
+                        if (selectedDish) toggleSelect(selectedDish);
+                      }}
+                    >
+                      <Text style={selectedDish && selected.includes(selectedDish.id) ? styles.removeButtonText : styles.addButtonText}>
+                        {selectedDish && selected.includes(selectedDish.id) ? 'Remove' : 'Add +'}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  <Text style={styles.detailDescription}>
+                    <Text style={{ fontWeight: "600" }}>{selectedDish?.mealType} </Text>
+                    {selectedDish?.description}
+                  </Text>
+
                   <TouchableOpacity
-                    style={selectedDish && selected.includes(selectedDish.id) ? styles.removeButton : styles.addButton}
+                    style={styles.ingredientRow}
                     onPress={() => {
-                      if (selectedDish) toggleSelect(selectedDish);
+                      setShowModal(false);
+                      navigation.navigate("Ingredient", { dish: selectedDish });
                     }}
                   >
-                    <Text style={selectedDish && selected.includes(selectedDish.id) ? styles.removeButtonText : styles.addButtonText}>
-                      {selectedDish && selected.includes(selectedDish.id) ? 'Remove' : 'Add +'}
-                    </Text>
+                    <Text style={styles.ingredientLabel}>📑 Ingredient</Text>
                   </TouchableOpacity>
                 </View>
-                <Image
-                  source={{ uri: selectedDish?.image || 'https://via.placeholder.com/300x200' }}
-                  style={styles.modalImage}
-                />
-                <Text style={styles.modalDescription}>
-                  {selectedDish?.description}
-                </Text>
-                <View style={{ marginBottom: 12 }}>
-                  {selectedDish?.mealType && (
-                    <Text style={{ fontSize: 14, color: '#333' }}>Meal Type: <Text style={{ fontWeight: 'bold' }}>{selectedDish.mealType}</Text></Text>
-                  )}
-                  {selectedDish?.type && (
-                    <Text style={{ fontSize: 14, color: '#333' }}>Type: <Text style={{ fontWeight: 'bold' }}>{selectedDish.type}</Text></Text>
-                  )}
-                  {selectedDish?.dishType && (
-                    <Text style={{ fontSize: 14, color: '#333' }}>Dish Type: <Text style={{ fontWeight: 'bold' }}>{selectedDish.dishType}</Text></Text>
-                  )}
-                  {selectedDish?.category?.name && (
-                    <Text style={{ fontSize: 14, color: '#333' }}>Category: <Text style={{ fontWeight: 'bold' }}>{selectedDish.category.name}</Text></Text>
-                  )}
-                  <Text style={{ fontSize: 14, color: '#333' }}>For Party: <Text style={{ fontWeight: 'bold' }}>{selectedDish?.forParty ? 'Yes' : 'No'}</Text></Text>
-                  <Text style={{ fontSize: 14, color: '#333' }}>For Chefit: <Text style={{ fontWeight: 'bold' }}>{selectedDish?.forChefit ? 'Yes' : 'No'}</Text></Text>
-                </View>
-                <TouchableOpacity
-                  style={styles.ingredientButton}
-                  onPress={() => {
-                    setShowModal(false);
-                    navigation.navigate("Ingredient", { dish: selectedDish });
-                  }}
-                >
-                  <Text style={styles.ingredientButtonText}>Ingredient</Text>
-                </TouchableOpacity>
               </View>
             </TouchableWithoutFeedback>
           </View>
@@ -227,12 +200,7 @@ export default function MenuScreen({ navigation }) {
   );
 }
 
-/**
- * CustomToggle
- * - width: 54, height: 32 (matching your previous values)
- * - knob uses Animated to slide between left positions
- * - shows inner dot when active
- */
+/* CustomToggle component same as before */
 function CustomToggle({ active, onToggle, color = "#4CAF50", ariaLabel = "toggle" }) {
   const ANIM_LEFT_ON = 28;
   const ANIM_LEFT_OFF = 6;
@@ -242,13 +210,9 @@ function CustomToggle({ active, onToggle, color = "#4CAF50", ariaLabel = "toggle
     Animated.timing(anim, {
       toValue: active ? ANIM_LEFT_ON : ANIM_LEFT_OFF,
       duration: 160,
-      useNativeDriver: false, // left positioning cannot use native driver
+      useNativeDriver: false,
     }).start();
   }, [active, anim]);
-
-  const knobStyle = {
-    left: anim,
-  };
 
   return (
     <TouchableOpacity
@@ -259,29 +223,28 @@ function CustomToggle({ active, onToggle, color = "#4CAF50", ariaLabel = "toggle
       style={[styles.switch, active ? { borderColor: color } : styles.switchInactive]}
     >
       <View style={styles.switchTrack} />
-      <Animated.View style={[styles.knob, active ? { borderColor: color } : styles.knobInactive, knobStyle]}>
+      <Animated.View style={[styles.knob, active ? { borderColor: color } : styles.knobInactive, { left: anim }]}>
         {active ? <View style={[styles.knobDot, { backgroundColor: color }]} /> : null}
       </Animated.View>
     </TouchableOpacity>
   );
 }
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    padding: 10,
+    padding: 10
   },
   topControls: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#fff",
     paddingBottom: 4,
     marginBottom: 2,
-    gap: 15,
+    gap: 15
   },
-
   selectionSummary: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -291,24 +254,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderBottomWidth: 1,
     borderBottomColor: "#f0f0f0",
-    width: '100%',
+    width: '100%'
   },
   selectionText: {
     fontSize: 15,
     fontWeight: "700",
-    color: "#333",
-    fontFamily: "Open Sans",
-    letterSpacing: 0.2,
+    color: "#333"
   },
-
   toggleContainer: {
     flexDirection: "row",
     alignItems: "center",
-
-    gap: 5,
+    gap: 5
   },
-
-  // switch container (outer)
   switch: {
     width: 50,
     height: 26,
@@ -318,28 +275,13 @@ const styles = StyleSheet.create({
     borderColor: '#E6E6E6',
     position: 'relative',
     marginHorizontal: 8,
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.06,
-    shadowRadius: 2,
-    elevation: 1,
-  },
-  switchActiveVeg: {
-    borderColor: '#4CAF50',
-  },
-  switchActiveNonVeg: {
-    borderColor: '#FF4444',
+    justifyContent: 'center'
   },
   switchInactive: {
     borderColor: '#E6E6E6',
-    backgroundColor: '#F7F7F7',
-    opacity: 0.95,
+    backgroundColor: '#F7F7F7'
   },
-
-  // track (background inside the pill)
   switchTrack: {
-  
     position: 'absolute',
     left: 4,
     right: 4,
@@ -347,12 +289,9 @@ const styles = StyleSheet.create({
     height: 10,
     borderRadius: 4,
     backgroundColor: '#eeeeee',
-    zIndex: 0,
     borderWidth: 1,
-    borderColor: '#E6E6E6',
+    borderColor: '#E6E6E6'
   },
-
-  // knob (animated)
   knob: {
     position: 'absolute',
     top: 3,
@@ -362,37 +301,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderWidth: 2,
     justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.08,
-    shadowRadius: 2,
-    elevation: 2,
+    alignItems: 'center'
   },
   knobInactive: {
-    borderColor: '#E6E6E6',
-    backgroundColor: '#fff',
-    opacity: 0.95,
+    borderColor: '#E6E6E6'
   },
   knobDot: {
     width: 8,
     height: 8,
-    borderRadius: 6,
-    alignSelf: 'center',
+    borderRadius: 6
   },
-
   dishList: {
     flex: 1,
     padding: 5,
-    backgroundColor: "#fff",
+    backgroundColor: "#fff"
   },
-
   footer: {
     flexDirection: "column",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "center"
   },
-
   footerLeft: {
     flexDirection: "row",
     alignItems: "center",
@@ -402,126 +330,118 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: "#f0f0f0",
     backgroundColor: "#fffaf4",
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 2,
-    elevation: 2,
     position: 'absolute',
     bottom: 70,
     left: 0,
-    right: 0,
+    right: 0
   },
-
   totalText: {
     fontSize: 15,
     fontWeight: "500",
-    color: "#333",
-    letterSpacing: 0.2,
+    color: "#333"
   },
   arrow: {
     fontSize: 20,
-    color: '3d3d3d',
-    fontWeight: '300',
+    color: '3d3d3d'
   },
   continueButton: {
-    textAlign: "center",
     backgroundColor: "#222",
     paddingVertical: 12,
     marginBottom: 15,
     borderRadius: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-    width: '95%',
+    width: '95%'
   },
   continueButtonText: {
     textAlign: "center",
     color: "#fff",
     fontSize: 16,
-    fontWeight: "600",
-    letterSpacing: 0.2,
+    fontWeight: "600"
   },
-
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "flex-end",
-    alignItems: "center",
+    alignItems: "center"
   },
-  modalContent: {
+  detailPopup: {
     backgroundColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    borderRadius: 0,
-    padding: 16,
     width: "100%",
-    minHeight: 320,
-    marginHorizontal: 0,
-    marginBottom: 0,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 8,
-    elevation: 8,
+    height: "50%",
   },
-  modalHeader: {
+  detailImage: {
+    width: "auto",
+    height: 163,
+    borderRadius: 24,
+    margin:20,
+    marginBottom: 25
+  },
+  detailContent: {
+    padding: 16
+  },
+  detailHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 12,
+    marginBottom: 8
   },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#333",
+  detailTitle: {
+    fontSize: 16,
+    fontWeight: "700",
+    color: "#000"
   },
   removeButton: {
-    backgroundColor: "#FF4444",
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#FF6B6B",
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 6,
+    borderRadius: 8
   },
   removeButtonText: {
-    color: "#fff",
-    fontSize: 12,
-    fontWeight: "600",
+    color: "#FF6B6B",
+    fontSize: 13,
+    fontWeight: "600"
   },
   addButton: {
     backgroundColor: "#4CAF50",
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 6,
+    borderRadius: 8
   },
   addButtonText: {
     color: "#fff",
-    fontSize: 12,
-    fontWeight: "600",
+    fontSize: 13,
+    fontWeight: "600"
   },
-
-  modalImage: {
-    width: "100%",
-    height: 200,
-    borderRadius: 8,
-    marginBottom: 12,
+  detailDescription: {
+    fontSize: 13,
+    color: "#555",
+    lineHeight: 18,
+    marginBottom: 12
   },
-  modalDescription: {
+  ingredientRow: {
+    marginTop: 8
+  },
+  ingredientLabel: {
     fontSize: 14,
-    color: "#666",
-    lineHeight: 20,
-    marginBottom: 16,
+    color: "#FF9800",
+    fontWeight: "600"
   },
-  ingredientButton: {
-    backgroundColor: "#f0f0f0",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 8,
-    alignItems: "center",
+  typeBox: {
+    width: 16,
+    height: 16,
+    borderWidth: 1.2,
+    borderRadius: 4,
+    marginLeft: 7,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
   },
-  ingredientButtonText: {
-    fontSize: 14,
-    color: "#666",
-    fontWeight: "500",
-  },
+  typeDot: {
+    width: 7,
+    height: 7,
+    borderRadius: 3.5,
+  }
 });
