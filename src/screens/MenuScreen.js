@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+// MenuScreen.js
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
-  FlatList,
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
   Modal,
   Image,
   ScrollView,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Animated
 } from "react-native";
 import dishes from "../data/dishes.json";
 import SearchBar from "../componensts/SearchBar";
 import CategoryTabs from "../componensts/CategoryTabs";
 import DishCard from "../componensts/DishCard";
-import { RollInLeft } from "react-native-reanimated";
 
 export default function MenuScreen({ navigation }) {
   const [selected, setSelected] = useState([]);
@@ -27,10 +27,26 @@ export default function MenuScreen({ navigation }) {
   const [nonVegFilter, setNonVegFilter] = useState(true);
 
   const categories = [
-    { id: 1, name: "Starter", count: selected.filter(id => dishes.find(d => d.id === id)?.mealType === "STARTER").length },
-    { id: 2, name: "Main Course", count: selected.filter(id => dishes.find(d => d.id === id)?.mealType === "MAIN COURSE").length },
-    { id: 3, name: "Desert", count: selected.filter(id => dishes.find(d => d.id === id)?.mealType === "DESSERT").length },
-    { id: 4, name: "Sides", count: selected.filter(id => dishes.find(d => d.id === id)?.mealType === "SIDES").length },
+    {
+      id: 1,
+      name: "Starter",
+      count: selected.filter(id => dishes.find(d => d.id === id)?.mealType === "STARTER").length
+    },
+    {
+      id: 2,
+      name: "Main Course",
+      count: selected.filter(id => dishes.find(d => d.id === id)?.mealType === "MAIN COURSE").length
+    },
+    {
+      id: 3,
+      name: "Desert",
+      count: selected.filter(id => dishes.find(d => d.id === id)?.mealType === "DESSERT").length
+    },
+    {
+      id: 4,
+      name: "Sides",
+      count: selected.filter(id => dishes.find(d => d.id === id)?.mealType === "SIDES").length
+    },
   ];
 
   const toggleSelect = (dish) => {
@@ -57,9 +73,9 @@ export default function MenuScreen({ navigation }) {
       activeCategory === 2 ? "MAIN COURSE" :
         activeCategory === 3 ? "DESSERT" : "SIDES");
     const matchesSearch = dish.name.toLowerCase().includes(searchText.toLowerCase());
-    const matchesVeg = vegFilter && dish.type === "VEG";
-    const matchesNonVeg = nonVegFilter && dish.type === "NON_VEG";
-    const matchesType = (vegFilter && nonVegFilter) ? true : (matchesVeg || matchesNonVeg);
+    const matchesVeg = dish.type === "VEG";
+    const matchesNonVeg = dish.type === "NON_VEG";
+    const matchesType = (vegFilter && nonVegFilter) ? true : (vegFilter ? matchesVeg : (nonVegFilter ? matchesNonVeg : false));
     return matchesCategory && matchesSearch && matchesType;
   });
 
@@ -84,7 +100,6 @@ export default function MenuScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-
       {/* Top Controls: Search, Tabs, Summary */}
       <View style={styles.topControls}>
         <SearchBar
@@ -104,28 +119,26 @@ export default function MenuScreen({ navigation }) {
 
           <View style={styles.toggleContainer}>
             {/* Veg Switch */}
-            <TouchableOpacity
-              style={[styles.switch, vegFilter ? styles.switchActiveVeg : styles.switchInactive]}
-              onPress={() => setVegFilter(v => !v)}
-            >
-              <View style={[styles.knob, vegFilter ? styles.knobVeg : styles.knobInactive, { left: vegFilter ? 18 : 4 }]} />
-            </TouchableOpacity>
+            <CustomToggle
+              active={vegFilter}
+              onToggle={() => setVegFilter(v => !v)}
+              color="#4CAF50"
+              ariaLabel="veg-filter"
+            />
 
             {/* Non-Veg Switch */}
-            <TouchableOpacity
-              style={[styles.switch, nonVegFilter ? styles.switchActiveNonVeg : styles.switchInactive]}
-              onPress={() => setNonVegFilter(nv => !nv)}
-            >
-              <View style={[styles.knob, nonVegFilter ? styles.knobNonVeg : styles.knobInactive, { left: nonVegFilter ? 18 : 4 }]} />
-            </TouchableOpacity>
-
+            <CustomToggle
+              active={nonVegFilter}
+              onToggle={() => setNonVegFilter(nv => !nv)}
+              color="#FF4444"
+              ariaLabel="nonveg-filter"
+            />
           </View>
         </View>
       </View>
 
       {/* Dish List */}
-      <ScrollView style={styles.dishList}>
-
+      <ScrollView style={styles.dishList} contentContainerStyle={{ paddingBottom: 120 }}>
         {filteredDishes.map((item) => (
           <DishCard
             key={item.id}
@@ -210,53 +223,54 @@ export default function MenuScreen({ navigation }) {
           </View>
         </TouchableWithoutFeedback>
       </Modal>
-
-      {/* ...existing code... */}
     </SafeAreaView>
   );
 }
 
+/**
+ * CustomToggle
+ * - width: 54, height: 32 (matching your previous values)
+ * - knob uses Animated to slide between left positions
+ * - shows inner dot when active
+ */
+function CustomToggle({ active, onToggle, color = "#4CAF50", ariaLabel = "toggle" }) {
+  const ANIM_LEFT_ON = 28;
+  const ANIM_LEFT_OFF = 6;
+  const anim = useRef(new Animated.Value(active ? ANIM_LEFT_ON : ANIM_LEFT_OFF)).current;
+
+  useEffect(() => {
+    Animated.timing(anim, {
+      toValue: active ? ANIM_LEFT_ON : ANIM_LEFT_OFF,
+      duration: 160,
+      useNativeDriver: false, // left positioning cannot use native driver
+    }).start();
+  }, [active, anim]);
+
+  const knobStyle = {
+    left: anim,
+  };
+
+  return (
+    <TouchableOpacity
+      accessible={true}
+      accessibilityLabel={ariaLabel}
+      activeOpacity={0.8}
+      onPress={onToggle}
+      style={[styles.switch, active ? { borderColor: color } : styles.switchInactive]}
+    >
+      <View style={styles.switchTrack} />
+      <Animated.View style={[styles.knob, active ? { borderColor: color } : styles.knobInactive, knobStyle]}>
+        {active ? <View style={[styles.knobDot, { backgroundColor: color }]} /> : null}
+      </Animated.View>
+    </TouchableOpacity>
+  );
+}
+
 const styles = StyleSheet.create({
-  switch: {
-    width: 40,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: '#f5f5f5',
-    borderWidth: 2,
-    borderColor: '#eee',
-    position: 'relative',
-    marginHorizontal: 4,
-    justifyContent: 'center',
-  },
-  switchActiveVeg: {
-    borderColor: '#4CAF50',
-  },
-  switchActiveNonVeg: {
-    borderColor: '#FF4444',
-  },
-  switchInactive: {
-    borderColor: '#eee',
-  },
-  knob: {
-    position: 'absolute',
-    top: 2,
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    backgroundColor: '#fff',
-    borderWidth: 2,
-  },
-  knobVeg: {
-    borderColor: '#4CAF50',
-    backgroundColor: '#4CAF50',
-  },
-  knobNonVeg: {
-    borderColor: '#FF4444',
-    backgroundColor: '#FF4444',
-  },
-  knobInactive: {
-    borderColor: '#ccc',
-    backgroundColor: '#eee',
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    padding: 10,
   },
   topControls: {
     display: 'flex',
@@ -266,18 +280,6 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
     marginBottom: 2,
     gap: 15,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    padding: 10,
-  },
-  title: {
-    fontFamily: "Open Sans",
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#1C1C1C",
-    letterSpacing: 0.5,
   },
 
   selectionSummary: {
@@ -298,42 +300,83 @@ const styles = StyleSheet.create({
     fontFamily: "Open Sans",
     letterSpacing: 0.2,
   },
+
   toggleContainer: {
     flexDirection: "row",
+    alignItems: "center",
     gap: 8,
-    alignItems: "center",
   },
-  toggle: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 32,
+
+  // switch container (outer)
+  switch: {
+    width: 54,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#F7F7F7',
+    borderWidth: 2,
+    borderColor: '#E6E6E6',
+    position: 'relative',
+    marginHorizontal: 8,
+    justifyContent: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.06,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  switchActiveVeg: {
+    borderColor: '#4CAF50',
+  },
+  switchActiveNonVeg: {
+    borderColor: '#FF4444',
+  },
+  switchInactive: {
+    borderColor: '#E6E6E6',
+    backgroundColor: '#F7F7F7',
+    opacity: 0.95,
+  },
+
+  // track (background inside the pill)
+  switchTrack: {
+    position: 'absolute',
+    left: 4,
+    right: 4,
+    top: 12,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#EFEFEF',
+    zIndex: 0,
+    borderWidth: 1,
+    borderColor: '#E6E6E6',
+  },
+
+  // knob (animated)
+  knob: {
+    position: 'absolute',
+    top: 4,
+    width: 24,
     height: 24,
-    borderRadius: 12,
-    borderWidth: 1.5,
-    marginHorizontal: 2,
-    marginVertical: 2,
-    paddingHorizontal: 4,
-    paddingVertical: 2,
+    borderRadius: 8,
+    backgroundColor: '#fff',
+    borderWidth: 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.08,
+    shadowRadius: 2,
+    elevation: 2,
   },
-  toggleOff: {
-    backgroundColor: "#fff",
-    borderColor: "#ddd",
+  knobInactive: {
+    borderColor: '#E6E6E6',
+    backgroundColor: '#fff',
+    opacity: 0.95,
   },
-  sectionHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    backgroundColor: "#fff",
-    borderBottomWidth: 1,
-    borderBottomColor: "#f0f0f0",
-  },
-  arrow: {
-    fontSize: 16,
-    color: "#666",
-    fontWeight: "bold",
+  knobDot: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    alignSelf: 'center',
   },
 
   dishList: {
@@ -341,11 +384,11 @@ const styles = StyleSheet.create({
     padding: 5,
     backgroundColor: "#fff",
   },
+
   footer: {
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
-
   },
 
   footerLeft: {
@@ -362,11 +405,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 2,
     elevation: 2,
-    position:'obselute',
-    bottom:10,
-    left:0,
-    right:0,
-    marginHorizontal:0,
+    position: 'absolute',
+    bottom: 10,
+    left: 0,
+    right: 0,
+    marginHorizontal: 0,
   },
 
   totalText: {
@@ -395,6 +438,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     letterSpacing: 0.2,
   },
+
   modalOverlay: {
     flex: 1,
     backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -433,13 +477,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 6,
-    
   },
   removeButtonText: {
     color: "#fff",
     fontSize: 12,
     fontWeight: "600",
   },
+  addButton: {
+    backgroundColor: "#4CAF50",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 6,
+  },
+  addButtonText: {
+    color: "#fff",
+    fontSize: 12,
+    fontWeight: "600",
+  },
+
   modalImage: {
     width: "100%",
     height: 200,
@@ -464,13 +519,4 @@ const styles = StyleSheet.create({
     color: "#666",
     fontWeight: "500",
   },
-  signupBanner: {
-    backgroundColor: "#2196F3",
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
- 
 });
