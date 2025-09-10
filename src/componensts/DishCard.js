@@ -15,7 +15,7 @@ function truncateDescription(desc) {
 }
 
 const DishCard = ({ dish, isSelected, onToggleSelect, onViewIngredients, onViewDetails }) => {
-  const getTypeColor = (type) => (type === 'NON_VEG' ? '#FF4444' : '#4CAF50');
+  const getTypeColor = (type) => (type === 'NON_VEG' ? '#ff941A' : '#4CAF50');
   const imageSource = imageMap[dish.image] || imageMap.default;
 
   return (
@@ -67,22 +67,18 @@ const styles = StyleSheet.create({
   descriptionRow: {
     marginTop: 2,
     marginBottom: 0,
-    // maxWidth: 180,
   },
   container: {
     flexDirection: 'row',
     backgroundColor: '#fff',
     marginBottom: 10,
-    borderRadius: 14,
+    borderRadius: 10,
     padding: 14,
     paddingRight: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 6,
-    elevation: 4,
+    elevation: 1,
     alignItems: 'flex-start',
-    minHeight: 110,
+    minHeight: 140,
+    justifyContent: 'space-between',
   },
   leftContent: {
     flex: 1,
@@ -147,48 +143,42 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   rightContent: {
-    width: 100,
+    width: 90,
     alignItems: 'flex-end',
     justifyContent: 'flex-start',
+    height: 90,
   },
   imageCard: {
-    width: 74,
-    height: 74,
-    borderRadius: 10,
+    width: "100%",
+    height: 90,
+    borderRadius: 5,
     backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 6,
-    elevation: 5,
+    elevation: 1,
     overflow: 'visible',
     alignItems: 'center',
     justifyContent: 'center',
   },
   image: {
-    width: 70,
-    height: 70,
-    borderRadius: 10,
+    width: "100%",
+    height: 90,
+    borderRadius: 6,
     backgroundColor: '#eee',
   },
+
   fab: {
     position: 'absolute',
-    right: -8,
-    bottom: -12,
+    bottom: -16,
     backgroundColor: '#fff',
     borderWidth: 1.2,
     borderColor: '#4CAF50',
-    paddingHorizontal: 14,
-    paddingVertical: 7,
-    borderRadius: 18,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.10,
-    shadowRadius: 3,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 7,
     elevation: 5,
+    // width: 'auto',
   },
   fabSelected: {
-    borderColor: '#FF4444',
+    borderColor: '#ff941A',
   },
   fabText: {
     color: '#4CAF50',
@@ -196,7 +186,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   fabTextSelected: {
-    color: '#FF4444',
+    color: '#ff941A',
   },
 });
 
