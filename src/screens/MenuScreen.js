@@ -17,6 +17,11 @@ import SearchBar from "../componensts/SearchBar";
 import CategoryTabs from "../componensts/CategoryTabs";
 import DishCard from "../componensts/DishCard";
 import { imageMap } from '../images/imageMap';
+import CustomToggle from "../componensts/CustomToggle";
+import SelectionSummary from "../componensts/SelectionSummary";
+import DishList from "../componensts/DishList";
+import FooterBar from "../componensts/FooterBar";
+import DishDetailModal from "../componensts/DishDetailModal";
 
 export default function MenuScreen({ navigation }) {
   const [selected, setSelected] = useState([]);
@@ -95,140 +100,42 @@ export default function MenuScreen({ navigation }) {
           activeCategory={activeCategory}
           onCategorySelect={setActiveCategory}
         />
-        <View style={styles.selectionSummary}>
-          <Text style={styles.selectionText}>
-            {getCategoryName()} Selected ({getCategoryCount()})
-          </Text>
-          <View style={styles.toggleContainer}>
-            <CustomToggle
-              active={vegFilter}
-              onToggle={() => setVegFilter(v => !v)}
-              color="#4CAF50"
-              ariaLabel="veg-filter"
-            />
-            <CustomToggle
-              active={nonVegFilter}
-              onToggle={() => setNonVegFilter(nv => !nv)}
-              color="#FF4444"
-              ariaLabel="nonveg-filter"
-            />
-          </View>
-        </View>
+        <SelectionSummary
+          vegFilter={vegFilter}
+          nonVegFilter={nonVegFilter}
+          setVegFilter={setVegFilter}
+          setNonVegFilter={setNonVegFilter}
+          categoryName={getCategoryName()}
+          categoryCount={getCategoryCount()}
+        />
       </View>
 
       {/* Dish List */}
-      <ScrollView style={styles.dishList} contentContainerStyle={{ paddingBottom: 120 }}>
-        {filteredDishes.map((item) => (
-          <DishCard
-            key={item.id}
-            dish={item}
-            isSelected={selected.includes(item.id)}
-            onToggleSelect={toggleSelect}
-            onViewIngredients={handleViewIngredients}
-            onViewDetails={handleViewDetails}
-          />
-        ))}
-      </ScrollView>
+      <DishList
+        items={filteredDishes}
+        selectedIds={selected}
+        onToggleSelect={toggleSelect}
+        onViewIngredients={handleViewIngredients}
+        onViewDetails={handleViewDetails}
+      />
 
       {/* Footer */}
-      <View style={styles.footer}>
-        <View style={styles.footerLeft}>
-          <Text style={styles.totalText}>Total Dish Selected {selected.length}</Text>
-          <Text style={styles.arrow}>{">"}</Text>
-        </View>
-        <TouchableOpacity style={styles.continueButton}>
-          <Text style={styles.continueButtonText}>Continue</Text>
-        </TouchableOpacity>
-      </View>
+      <FooterBar totalSelected={selected.length} />
 
       {/* Dish Detail Modal */}
-      <Modal
+      <DishDetailModal
         visible={showModal}
-        transparent={true}
-        animationType="slide"
-        onRequestClose={() => setShowModal(false)}
-      >
-        <TouchableWithoutFeedback onPress={() => setShowModal(false)}>
-          <View style={styles.modalOverlay}>
-            <TouchableWithoutFeedback>
-              <View style={styles.detailPopup}>
-                <Image
-                  source={imageMap[selectedDish?.image] || imageMap.default}
-                  style={styles.detailImage}
-                />
-                <View style={styles.detailContent}>
-                  <View style={styles.detailHeader}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <Text style={styles.detailTitle}>{selectedDish?.name}</Text>
-                      <View style={styles.typeBox}>
-                        <View style={[styles.typeDot, { backgroundColor: selectedDish?.type === 'NON_VEG' ? '#ff941A' : '#4CAF50' }]} />
-                      </View>
-                    </View>
-                    <TouchableOpacity
-                      style={selectedDish && selected.includes(selectedDish.id) ? styles.removeButton : styles.addButton}
-                      onPress={() => {
-                        if (selectedDish) toggleSelect(selectedDish);
-                      }}
-                    >
-                      <Text style={selectedDish && selected.includes(selectedDish.id) ? styles.removeButtonText : styles.addButtonText}>
-                        {selectedDish && selected.includes(selectedDish.id) ? 'Remove' : 'Add +'}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  <Text style={styles.detailDescription}>
-                    <Text style={{ fontWeight: "600" }}>{selectedDish?.mealType} </Text>
-                    {selectedDish?.description}
-                  </Text>
-
-                  <TouchableOpacity
-                    style={styles.ingredientRow}
-                    onPress={() => {
-                      setShowModal(false);
-                      navigation.navigate("Ingredient", { dish: selectedDish });
-                    }}
-                  >
-                    <Text style={styles.ingredientLabel}>📑 Ingredient</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </TouchableWithoutFeedback>
-          </View>
-        </TouchableWithoutFeedback>
-      </Modal>
+        onClose={() => setShowModal(false)}
+        selectedDish={selectedDish}
+        selectedIds={selected}
+        onToggleSelect={toggleSelect}
+        onNavigateIngredient={() => { setShowModal(false); navigation.navigate("Ingredient", { dish: selectedDish }); }}
+      />
     </SafeAreaView>
   );
 }
 
-/* CustomToggle component same as before */
-function CustomToggle({ active, onToggle, color = "#4CAF50", ariaLabel = "toggle" }) {
-  const ANIM_LEFT_ON = 28;
-  const ANIM_LEFT_OFF = 6;
-  const anim = useRef(new Animated.Value(active ? ANIM_LEFT_ON : ANIM_LEFT_OFF)).current;
-
-  useEffect(() => {
-    Animated.timing(anim, {
-      toValue: active ? ANIM_LEFT_ON : ANIM_LEFT_OFF,
-      duration: 160,
-      useNativeDriver: false,
-    }).start();
-  }, [active, anim]);
-
-  return (
-    <TouchableOpacity
-      accessible={true}
-      accessibilityLabel={ariaLabel}
-      activeOpacity={0.8}
-      onPress={onToggle}
-      style={[styles.switch, active ? { borderColor: 'transparent' } : styles.switchInactive]}
-    >
-      <View style={styles.switchTrack} />
-      <Animated.View style={[styles.knob, active ? { borderColor: color } : styles.knobInactive, { left: anim }]}>
-        {active ? <View style={[styles.knobDot, { backgroundColor: color }]} /> : null}
-      </Animated.View>
-    </TouchableOpacity>
-  );
-}
+/* CustomToggle moved to ../componensts/CustomToggle */
 
 
 const styles = StyleSheet.create({
