@@ -1,23 +1,13 @@
 // MenuScreen.js
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState} from "react";
 import {
   View,
-  Text,
-  TouchableOpacity,
   StyleSheet,
-  SafeAreaView,
-  Modal,
-  Image,
-  ScrollView,
-  TouchableWithoutFeedback,
-  Animated
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import dishes from "../data/dishes.json";
 import SearchBar from "../componensts/SearchBar";
 import CategoryTabs from "../componensts/CategoryTabs";
-import DishCard from "../componensts/DishCard";
-import { imageMap } from '../images/imageMap';
-import CustomToggle from "../componensts/CustomToggle";
 import SelectionSummary from "../componensts/SelectionSummary";
 import DishList from "../componensts/DishList";
 import FooterBar from "../componensts/FooterBar";
@@ -92,8 +82,7 @@ export default function MenuScreen({ navigation }) {
       <View style={styles.topControls}>
         <SearchBar
           value={searchText}
-          onChangeText={setSearchText}
-          placeholder="< Search dish for your party......"
+          setSearchText={setSearchText}
         />
         <CategoryTabs
           categories={categories}
